@@ -4,6 +4,7 @@ class Folder(models.Model):
     """Représente un dossier contenant des vidéos."""
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    path = models.CharField(max_length=1024, default="")
 
     def __str__(self):
         return self.name
