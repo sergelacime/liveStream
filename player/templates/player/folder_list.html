@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossiers de vidéos</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Dossiers de Vidéos</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for folder in folders %}
+            <a href="{% url 'video_list_by_folder' folder.id %}" class="block bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <div class="p-6 text-center">
+                    <h2 class="text-2xl font-semibold text-gray-700">{{ folder.name }}</h2>
+                    <p class="text-gray-500 mt-2">{{ folder.description|default:"Aucun descriptif" }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="mt-8 text-center">
+            <a href="/" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Retour à l'accueil</a>
+        </div>
+    </div>
+</body>
+</html>

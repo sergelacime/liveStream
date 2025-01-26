@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur vidéo</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Plyr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="mt-8 text-center">
+        <a href="{% url 'video_list_by_folder' video.folder.id %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Retour</a>
+    </div>
+    <div class="container mx-auto py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">{{ video.title }}</h1>
+        
+        <div class="flex justify-center">
+            <!-- Plyr Player -->
+            <video id="player" class="plyr" controls>
+                <source src="{{ video.file.url }}" type="video/x-matroska">
+                <source src="{{ video.file.url }}" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture vidéo.
+            </video>
+        </div>
+    </div>
+
+    <!-- Plyr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.polyfilled.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const player = new Plyr('#player', {
+                autoplay: true,
+                controls: [
+                    'play',       // Lecture/Pause
+                    'progress',   // Barre de progression
+                    'current-time', // Temps actuel
+                    'mute',       // Mute
+                    'volume',     // Contrôle du volume
+                    'fullscreen', // Plein écran
+                    'restart',    // Recommencer la vidéo
+                ],
+                settings: ['quality', 'speed', 'loop'],
+                // Option pour activer la barre de progression automatiquement si nécessaire
+                clickToPlay: true,  // Le clic sur la vidéo lance la lecture
+                loadError: () => {
+                    console.log('Erreur de chargement de la vidéo');
+                },
+            });
+
+            // Option supplémentaire : Mettre à jour la barre de progression à chaque mise à jour
+            player.on('timeupdate', () => {
+                console.log('Temps actuel:', player.currentTime);
+            });
+        });
+    </script>
+</body>
+</html>

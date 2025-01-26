@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des vidéos</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div id="app"></div>
+
+    <script type="text/babel">
+        const App = () => {
+            const [videos, setVideos] = React.useState([]);
+
+            React.useEffect(() => {
+                // Récupère les vidéos depuis l'API Django
+                fetch('/api/videos/') // Crée une API dans Django pour retourner la liste des vidéos
+                    .then(response => response.json())
+                    .then(data => setVideos(data));
+            }, []);
+
+            return (
+                <div className="container mx-auto py-8">
+                    <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
+                        Liste des vidéos
+                    </h1>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {videos.map(video => (
+                            <a
+                                href={`/video/${video.id}/`}
+                                key={video.id}
+                                className="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                            >
+                                <img
+                                    src="https://via.placeholder.com/400x250?text=Video"
+                                    alt={video.title}
+                                    className="w-full h-48 object-cover"
+                                />
+                                <div className="p-4">
+                                    <h2 className="text-xl font-semibold text-gray-700">
+                                        {video.title}
+                                    </h2>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('app'));
+    </script>
+</body>
+</html>
